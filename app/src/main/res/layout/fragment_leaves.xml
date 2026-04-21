@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_color">
+
+        <!-- ══════════════════════════════════════ -->
+        <!--              TOP HEADER                -->
+        <!-- ══════════════════════════════════════ -->
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_icon_btn"
+            android:contentDescription="@string/back"
+            android:padding="8dp"
+            android:src="@drawable/ic_left"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_primary" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_header_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/leaves"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppins_semibold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_back"
+            app:layout_constraintStart_toEndOf="@id/iv_back"
+            app:layout_constraintTop_toTopOf="@id/iv_back" />
+
+       <!-- <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_icon_btn"
+            android:contentDescription="@string/more"
+            android:padding="8dp"
+            android:src="@drawable/ic_more_vertical"
+            app:layout_constraintBottom_toBottomOf="@id/iv_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_back"
+            app:tint="@color/text_primary" />-->
+
+        <!-- ══════════════════════════════════════ -->
+        <!--           SCROLLABLE CONTENT           -->
+        <!-- ══════════════════════════════════════ -->
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            android:clipToPadding="false"
+            android:paddingBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_back">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <!-- ─────────────────────────────── -->
+                <!--      WEEK / MONTH TOGGLE        -->
+                <!-- ─────────────────────────────── -->
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleGroupEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="20dp"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    app:checkedButton="@id/btn_week"
+                    style="@style/LeaveFilterToggleGroup">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_week"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/last_seven"
+                        android:textSize="13sp"
+                        style="@style/LeaveFilterButton" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_month"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/this_month"
+                        android:textSize="13sp"
+                        style="@style/LeaveFilterButton" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <!-- ─────────────────────────────── -->
+                <!--   LEAVE STATISTICS SECTION      -->
+                <!-- ─────────────────────────────── -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/leaves_statistics"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_semibold" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/view_all"
+                        android:textColor="@color/blue_iris"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp" />
+
+                </LinearLayout>
+
+                <!-- HERO GRADIENT STAT CARD -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/card_hero_stat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_hero_card"
+                    android:padding="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:clipChildren="false">
+
+                    <!-- Decorative circles -->
+                    <View
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:background="@drawable/bg_circle_deco_large"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginEnd="-20dp"
+                        android:layout_marginTop="-20dp" />
+
+                    <View
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/bg_circle_deco_small"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="-16dp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_total_leave_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_leaves"
+                        android:textColor="#B8B3F0"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_total_leave_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/dash"
+                        android:textColor="@color/white"
+                        android:textSize="38sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_leave_label" />
+
+                    <!-- Divider -->
+                    <View
+                        android:id="@+id/hero_divider"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="#40FFFFFF"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_leave_txt" />
+
+                    <!-- Stats row: Pending | Approved | Rejected -->
+                    <LinearLayout
+                        android:id="@+id/ly_hero_stats_row"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/hero_divider">
+
+                        <!-- Pending -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_pending_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dash"
+                                android:textColor="#FCDE5A"
+                                android:textSize="22sp"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/pending"
+                                android:textColor="#99FFFFFF"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <!-- Vertical divider -->
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#30FFFFFF"
+                            android:layout_marginEnd="16dp" />
+
+                        <!-- Approved -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_approved_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dash"
+                                android:textColor="#5DCAA5"
+                                android:textSize="22sp"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/approved"
+                                android:textColor="#99FFFFFF"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <!-- Vertical divider -->
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="#30FFFFFF"
+                            android:layout_marginEnd="16dp" />
+
+                        <!-- Rejected -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_rejected_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dash"
+                                android:textColor="#F09595"
+                                android:textSize="22sp"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/rejected"
+                                android:textColor="#99FFFFFF"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- REMAINING BALANCE PILL CARD -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/card_remaining_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_tinted_purple_card"
+                    android:padding="@dimen/_6sdp"
+                    android:layout_marginBottom="@dimen/_5sdp">
+
+                    <ImageView
+                        android:id="@+id/iv_balance_icon"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:background="@drawable/bg_purple_icon_circle"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_balance"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:tint="@color/blue_iris" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_remaining_label"
+                        style="@style/TEXT_REGULAR_BLACK_10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:text="@string/remaining_balance"
+                        android:textColor="@color/blue_iris"
+                        app:layout_constraintStart_toEndOf="@id/iv_balance_icon"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_used_leaves_txt"
+                        style="@style/TEXT_MEDIUM_BLACK_12"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="10"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/tv_remaining_label"
+                        app:layout_constraintTop_toBottomOf="@id/tv_remaining_label" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- LEAVE TYPE BALANCE GRID (RecyclerView with GridLayout) -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_remaining"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_leave_balance" />
+
+                <!-- ─────────────────────────────── -->
+                <!--        MY TEAM SECTION          -->
+                <!-- ─────────────────────────────── -->
+
+                <LinearLayout
+                    android:id="@+id/ly_my_team_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_my_team"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/my_team"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_my_team_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/view_all"
+                        android:textColor="@color/blue_iris"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp" />
+
+                </LinearLayout>
+
+                <!-- TEAM STATS CARD -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ly_myteam_attend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_surface_card_modern"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    tools:visibility="visible">
+
+                    <!-- Header row: chart icon + period label -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ly_team_card_header"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ic_person"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/ic_person_outline"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:padding="@dimen/_5sdp"
+                            android:background="@drawable/bg_purple_icon_circle" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_team_period_label"
+                            style="@style/TEXT_MEDIUM_GREY_10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            app:layout_constraintStart_toEndOf="@+id/ic_person"
+                            app:layout_constraintTop_toTopOf="@+id/ic_person"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:text="@string/last_seven_day"
+                             />
+
+                        <!-- Members badge -->
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_total_member_txt"
+                            style="@style/TEXT_MEDIUM_WHITE_10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_member_badge"
+                            android:paddingStart="@dimen/_3sdp"
+                            android:paddingEnd="@dimen/_3sdp"
+                            android:paddingTop="@dimen/_1sdp"
+                            android:paddingBottom="@dimen/_1sdp"
+                            android:text="12 members"
+                            app:layout_constraintStart_toEndOf="@+id/tv_team_period_label"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- Team stats row -->
+                    <LinearLayout
+                        android:id="@+id/ly_team_stats_row"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ly_team_card_header">
+
+                        <!-- All leaves -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_present_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dash"
+                                android:textColor="@color/colorApp"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/all_leaves"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/divider" />
+
+                        <!-- Approved -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_work_home_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dash"
+                                android:textColor="#1D9E75"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/approved"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/divider" />
+
+                        <!-- Rejected -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_teams_absent_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dash"
+                                android:textColor="#E24B4A"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/rejected"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/divider" />
+
+                        <!-- Pending -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tv_teams_onleave_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/dash"
+                                android:textColor="#BA7517"
+                                android:textSize="24sp"
+                                android:fontFamily="@font/poppins_semibold" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/pending"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- ─────────────────────────────── -->
+                <!--      UPCOMING LEAVES            -->
+                <!-- ─────────────────────────────── -->
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_my_shift"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="@string/upcoming_leavs"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_upcoming_leaves"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:itemCount="2"
+                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_upcoming_leave"
+                    tools:orientation="horizontal"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

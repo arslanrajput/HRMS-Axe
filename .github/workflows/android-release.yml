@@ -1,0 +1,108 @@
+name: Android Release
+
+on:
+  push:
+    tags:
+      - "android-v*"
+    branches:
+      - "main"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: Production
+    env:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+      GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+      ANDROID_PACKAGE_NAME: ${{ vars.ANDROID_PACKAGE_NAME != '' && vars.ANDROID_PACKAGE_NAME || secrets.ANDROID_PACKAGE_NAME }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
+      - name: Validate release configuration
+        run: |
+          test -n "${ANDROID_PACKAGE_NAME}" || (echo "ANDROID_PACKAGE_NAME variable is required" && exit 1)
+          test -n "${ANDROID_KEYSTORE_PASSWORD}" || (echo "ANDROID_KEYSTORE_PASSWORD secret is required" && exit 1)
+          test -n "${ANDROID_KEY_ALIAS}" || (echo "ANDROID_KEY_ALIAS secret is required" && exit 1)
+          test -n "${ANDROID_KEY_PASSWORD}" || (echo "ANDROID_KEY_PASSWORD secret is required" && exit 1)
+          if [ -z "${PLAY_SERVICE_ACCOUNT_JSON}" ] && [ -z "${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON}" ]; then
+            echo "PLAY_SERVICE_ACCOUNT_JSON (or GOOGLE_PLAY_SERVICE_ACCOUNT_JSON) secret is required"
+            exit 1
+          fi
+
+      - name: Auto increment versionCode and versionName
+        run: |
+          VERSION_CODE="$(date -u +%y%j%H%M)"
+          VERSION_NAME_DATE="$(date -u +%Y.%m.%d)"
+          BASE_VERSION_NAME="${ANDROID_BASE_VERSION_NAME:-1.0.0}"
+          VERSION_NAME="${BASE_VERSION_NAME}+${VERSION_NAME_DATE}.${GITHUB_RUN_NUMBER}"
+          sed -i -E "s/versionCode = [0-9]+/versionCode = ${VERSION_CODE}/" app/build.gradle.kts
+          sed -i -E "s/versionName = \"[^\"]+\"/versionName = \"${VERSION_NAME}\"/" app/build.gradle.kts
+          echo "Computed VERSION_CODE=${VERSION_CODE}"
+          echo "Computed VERSION_NAME=${VERSION_NAME}"
+          echo "ANDROID_RELEASE_NAME=${VERSION_NAME}" >> "${GITHUB_ENV}"
+          grep -nE "versionCode|versionName" app/build.gradle.kts
+
+      - name: Decode release keystore
+        if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
+        run: |
+          echo "${ANDROID_KEYSTORE_BASE64}" | base64 --decode > "${RUNNER_TEMP}/android-release.jks"
+          echo "ANDROID_KEYSTORE_PATH=${RUNNER_TEMP}/android-release.jks" >> "${GITHUB_ENV}"
+
+      - name: Build release artifacts
+        run: ./gradlew assembleRelease bundleRelease --stacktrace
+
+      - name: Upload release APK and AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-artifacts
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
+
+      - name: Upload AAB to Google Play
+        if: ${{ (env.PLAY_SERVICE_ACCOUNT_JSON != '' || env.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON != '') && env.ANDROID_PACKAGE_NAME != '' }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ env.PLAY_SERVICE_ACCOUNT_JSON != '' && env.PLAY_SERVICE_ACCOUNT_JSON || env.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: ${{ env.ANDROID_PACKAGE_NAME }}
+          releaseFiles: app/build/outputs/bundle/release/*.aab
+          track: ${{ vars.ANDROID_PLAY_TRACK != '' && vars.ANDROID_PLAY_TRACK || 'production' }}
+          status: ${{ vars.ANDROID_PLAY_RELEASE_STATUS != '' && vars.ANDROID_PLAY_RELEASE_STATUS || 'completed' }}
+          releaseName: ${{ env.ANDROID_RELEASE_NAME }}
+
+      - name: Upload mapping and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-reports
+          path: |
+            app/build/outputs/mapping/release
+            app/build/reports
+          if-no-files-found: warn

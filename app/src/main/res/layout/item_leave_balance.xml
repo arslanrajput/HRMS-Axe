@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_leave_balance.xml  —  used by RemainingLeaveAdapter in a 3-column grid -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_2sdp"
+    android:background="@drawable/bg_leave_balance_chip"
+    android:padding="@dimen/_8sdp"
+    android:id="@+id/view_bg"
+    >
+
+
+    <!--  Leave count  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_leave_count"
+        style="@style/TEXT_MEDIUM_BLACK_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/text_primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10" />
+
+    <!--  Leave type label  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_leave_type"
+        style="@style/TEXT_MEDIUM_GREY_10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:gravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_leave_count"
+        tools:text="Annual" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

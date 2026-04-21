@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_upcoming_leave.xml  —  horizontal scroll card with left-color accent -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/bg_upcoming_leave_card"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp"
+    android:paddingEnd="@dimen/_5sdp"
+    >
+
+    <!--  Leave type tag (e.g. "ANNUAL LEAVE")  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_leave_type_tag"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:letterSpacing="0.05"
+        android:textAllCaps="true"
+        android:textColor="@color/colorApp"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view_accent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Annual Leave" />
+
+    <!--  Date range  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_leave_dates"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_leave_type_tag"
+        app:layout_constraintTop_toBottomOf="@id/tv_leave_type_tag"
+        tools:text="Apr 10 – Apr 14" />
+
+    <!--  Duration badge  -->
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/TEXT_MEDIUM_BLACK_10"
+        android:id="@+id/tv_leave_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_leave_duration_badge"
+        android:padding="@dimen/_3sdp"
+        android:textColor="@color/colorApp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_leave_type_tag"
+        app:layout_constraintTop_toBottomOf="@id/tv_leave_dates"
+        tools:text="5 days" />
+
+    <!--  Status badge  -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_leave_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_leave_status_badge"
+        android:fontFamily="@font/poppins_medium"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_leave_dates"
+        tools:text="Approved" />
+
+    <View
+        android:id="@+id/view_accent"
+        android:layout_width="4dp"
+        android:layout_height="0dp"
+        android:background="@color/colorApp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
